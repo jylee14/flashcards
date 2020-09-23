@@ -1,22 +1,22 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-  name: {
+  term: {
     type: String,
     required: true
   },
-  cards:[{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Flashcard'
-  }]
+  definition: {
+    type: String,
+    required: true
+  }
 })
 
 schema.set('toJSON', {
-  transform: (doc, obj) => {
+  transform: (_doc, obj) => {
     obj.id = obj._id.toString()
     delete obj._id
     delete obj.__v
   }
 })
 
-module.exports = new mongoose.model('Deck', schema)
+module.exports = new mongoose.model('Flashcard', schema)

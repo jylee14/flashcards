@@ -1,20 +1,25 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const Deck = require('../models/deck')
 const FlashCard = require('../models/flashcard')
 
-const resolvers = {
+const resolver = {
   Query: {
-    allFlashCards: async (root, args) => {
-      // args => (deck: String)
+    allFlashCards: async () => {
       const allCards = await FlashCard.find({})
       return allCards
     },
-    allDecks: () => [],
-    getDeck: (root, args) => [] //(deck: String, id: ID):
+    allDecks: async () => await Deck.find({}).populate('cards'),
+    getDeck: async (_root, args) => {
+      const deck = await Deck.findOne({
+        name: args.name
+      }).populate('cards')
+
+      return deck
+    }
   },
 
   Mutation: {
-    newFlashCard: async (root, args) => {
+    newFlashCard: async (_root, args) => {
       const newFlashCard = new FlashCard({
         term: args.term,
         definition: args.definition
@@ -22,7 +27,7 @@ const resolvers = {
       await newFlashCard.save()
       return newFlashCard
     },
-    createDeck: async (root, args) => { // createDeck(name: String!, cards: [String!]!): Deck!
+    createDeck: async (_root, args) => { // createDeck(name: String!, cards: [String!]!): Deck!
       const name = args.name
       const cards = args.cards.map(card => mongoose.Types.ObjectId(card))
       const deck = new Deck({ name, cards })
@@ -34,4 +39,4 @@ const resolvers = {
   }
 }
 
-module.exports = resolvers
+module.exports = resolver

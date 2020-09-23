@@ -1,5 +1,5 @@
 const cors = require('cors')
-const helmet = require('helmet')
+// const helmet = require('helmet')
 const express = require('express')
 const mongoose = require('mongoose')
 
@@ -8,10 +8,10 @@ const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 require('express-async-errors')
 
-mongoose.connect(config.MONGO_URI, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-  })
+mongoose.connect(config.mongo_uri, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+})
   .then(() => {
     logger.info('connected to mongoDB')
   })
@@ -26,12 +26,6 @@ app.use(middleware.requestLogger)
 app.use(cors())
 // app.use(helmet())
 app.use(express.json())
-
-const userRouter = require('./controllers/user')
-const loginRouter = require('./controllers/login')
-app.use('/api/user', userRouter)
-app.use('/api/login', loginRouter)
-
 app.use(middleware.errorHandler)
 
 module.exports = app
