@@ -14,9 +14,15 @@ const typeDefs = gql`
   }
 
   type Query {
-    allFlashCards(deck: String!): [FlashCard!]!
+    allFlashCards(deck: String): [FlashCard!]!
     allDecks: [Deck!]!
     getDeck(deck: String, id: ID): Deck!
+  }
+
+  type Mutation {
+    newFlashCard(term: String!, definition: String!): FlashCard
+
+    createDeck(name: String!, cards: [String!]!): Deck!
   }
 `
 
