@@ -11,13 +11,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  coffeeNotes: [{
+  decks: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Coffee'
-  }],
-  beans: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Bean'
+    ref: 'Deck'
   }]
 })
 
