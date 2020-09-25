@@ -2,11 +2,7 @@ import React from 'react'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-interface BannerProps {
-  username: string | null;
-}
-
-const GreetingBanner: React.FC<BannerProps> = ({ username }) => {
+const GreetingBanner: React.FC<{ username : string | null }> = ({ username }) => {
   const padding: React.CSSProperties = {
     paddingLeft: '1em',
     float: 'right'
