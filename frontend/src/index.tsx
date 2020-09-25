@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client'
+
 import App from './App';
 
-import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client'
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
@@ -12,7 +14,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </ApolloProvider>,
   document.getElementById('root')
 );
