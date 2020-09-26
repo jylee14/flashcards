@@ -1,10 +1,12 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 
-const Notification = () => {
-  const { message, isError } = useSelector(state => state.notify)
+interface NotificationProps {
+  message: string;
+  isError: boolean;
+}
 
-  if(!message){
+const Notification: React.FC<NotificationProps> = ({ message, isError }) => {
+  if (!message) {
     return null
   }
 

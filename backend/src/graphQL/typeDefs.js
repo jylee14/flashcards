@@ -10,8 +10,20 @@ const typeDefs = gql`
   type Deck {
     id: ID!
     name: String!
+    public: Boolean
     description: String
     cards: [FlashCard!]!
+  }
+
+  type User { 
+    username: String!
+    decks: [Deck!]!
+    id: ID!
+  }
+
+  type Token {
+    username: String!
+    value: String!
   }
 
   type Query {
@@ -21,8 +33,9 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    login(username: String!, password: String!): Token
+    createUser(username: String!, password: String!): Boolean
     newFlashCard(term: String!, definition: String!): FlashCard
-
     createDeck(name: String!, public: Boolean!, description: String, cards: [String!]!): Deck!
 }`
 

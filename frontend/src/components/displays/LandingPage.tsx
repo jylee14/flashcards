@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap'
 const LandingPage = () => {
   return (
     <div>
-      <h3>Welcome to CoffeeNote!</h3>
+      <h3>Welcome to FlashCards!</h3>
       <div>
         <h5>Already have a profile? </h5>
         <Link to="/login"><Button>Log in</Button></Link>

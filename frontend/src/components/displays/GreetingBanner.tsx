@@ -2,7 +2,12 @@ import React from 'react'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-const GreetingBanner: React.FC<{ username : string | null }> = ({ username }) => {
+interface GreetingBannerProps {
+  username: string | null 
+  logout(): void
+}
+
+const GreetingBanner: React.FC<GreetingBannerProps> = ({ username, logout }) => {
   const padding: React.CSSProperties = {
     paddingLeft: '1em',
     float: 'right'
@@ -17,14 +22,14 @@ const GreetingBanner: React.FC<{ username : string | null }> = ({ username }) =>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link href="#" as="span"><Link to="/coffee">Coffee</Link></Nav.Link>
-                <Nav.Link href="#" as="span"><Link to="/bean">Beans</Link></Nav.Link>
+                <Nav.Link href="#" as="span"><Link to="/myDeck">My Decks</Link></Nav.Link>
+                <Nav.Link href="#" as="span"><Link to="/newDeck">New Deck</Link></Nav.Link>
               </Nav>
               <Navbar.Text className="justify-content-end">
                 {username}&apos;s profile
               </Navbar.Text>
               <span style={padding}>
-                <Button size="sm" variant="secondary">Logout</Button>
+                <Button size="sm" variant="secondary" onClick={logout}>Logout</Button>
               </span>
             </Navbar.Collapse>
           </>
