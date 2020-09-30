@@ -18,3 +18,6 @@ export interface NewDeckFormProps {
   closeModal():void
 }
 
+export interface fileList {
+  fileList: FileList | null
+}
