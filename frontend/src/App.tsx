@@ -8,11 +8,8 @@ import GreetingBanner from './components/displays/GreetingBanner';
 
 import { CREATE_USER, LOGIN } from './queries';
 import { MutationResult } from '@apollo/client';
-
-interface User {
-  username: string | null;
-  token: string | null;
-}
+import UserPage from './components/displays/UserPage';
+import { User } from './misc/interfaces';
 
 function App() {
   const history = useHistory()
@@ -89,7 +86,9 @@ function App() {
           />
         </Route>
         <Route path="/">
-          {user.username && user.token ? <div>Hello</div> : <LandingPage></LandingPage>}
+          {user.username && user.token
+            ? <UserPage user={user} />
+            : <LandingPage />}
         </Route>
       </Switch>
     </div>

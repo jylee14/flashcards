@@ -1,11 +1,7 @@
 import React from 'react'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-
-interface GreetingBannerProps {
-  username: string | null 
-  logout(): void
-}
+import { GreetingBannerProps } from '../../misc/interfaces'
 
 const GreetingBanner: React.FC<GreetingBannerProps> = ({ username, logout }) => {
   const padding: React.CSSProperties = {
@@ -23,7 +19,6 @@ const GreetingBanner: React.FC<GreetingBannerProps> = ({ username, logout }) => 
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
                 <Nav.Link href="#" as="span"><Link to="/myDeck">My Decks</Link></Nav.Link>
-                <Nav.Link href="#" as="span"><Link to="/newDeck">New Deck</Link></Nav.Link>
               </Nav>
               <Navbar.Text className="justify-content-end">
                 {username}&apos;s profile
