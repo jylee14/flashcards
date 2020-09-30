@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { GreetingBannerProps } from '../../misc/interfaces'
+import { GreetingBannerProps } from '../../interfaces'
 
 const GreetingBanner: React.FC<GreetingBannerProps> = ({ username, logout }) => {
   const padding: React.CSSProperties = {

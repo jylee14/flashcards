@@ -9,7 +9,7 @@ import GreetingBanner from './components/displays/GreetingBanner';
 import { CREATE_USER, LOGIN } from './queries';
 import { MutationResult } from '@apollo/client';
 import UserPage from './components/displays/UserPage';
-import { User } from './misc/interfaces';
+import { User } from './interfaces';
 
 function App() {
   const history = useHistory()

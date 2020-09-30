@@ -2,27 +2,37 @@ import React, { FormEvent, useState } from 'react'
 import ModalHeader from 'react-bootstrap/esm/ModalHeader'
 import { Modal, ModalBody, Form, ModalTitle, Button } from 'react-bootstrap'
 
-import { NewDeckFormProps } from '../../misc/interfaces'
+import { NewDeckFormProps } from '../../interfaces'
 
-
-interface flashCardDatum {
-  term: string
-  definition: string
+interface FlashCardDatum {
+  term: string;
+  definition: string;
 }
 
 const NewDeckForm: React.FC<NewDeckFormProps> = ({ userToken, show, closeModal }) => {
   const [name, setName] = useState('')
   const [isPublic, setIsPublic] = useState(false)
   const [sourceIsFile, setSourceIsFile] = useState(true)
-  const [file, setFile] = useState<File | null>(null)
-  const [data, setData] = useState<flashCardDatum[] | null>(null)
 
-  const createNote = async (e: FormEvent<HTMLElement>) => {
+  const [file, setFile] = useState<File | null>(null)
+
+  const [separator, setSeparator] = useState(';')
+  const [inputData, setInputData] = useState('')
+
+  const createDeck = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault()
 
     console.log('name:', name, '\nisPublic:', isPublic, '\nSourceIsFile:', sourceIsFile)
-    var text = await file?.text()
-    console.log(text)
+    const deckData = new Array<FlashCardDatum>()
+    const workingData = sourceIsFile ? await file!.text() : inputData
+    const termSeparator = sourceIsFile ? '\t' : separator
+    
+    const wordDefinitionPairs = workingData.split('\n').map(pair => pair.split(termSeparator))
+    for (const [term, definition] of wordDefinitionPairs) {
+      const datum: FlashCardDatum = { term, definition }
+      deckData.push(datum)
+    }
+    console.log(deckData)
     closeModal()
   }
 
@@ -34,7 +44,7 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ userToken, show, closeModal }
         </ModalTitle>
       </ModalHeader>
       <ModalBody>
-        <Form onSubmit={createNote}>
+        <Form onSubmit={createDeck}>
           <Form.Group>
             <Form.Label>Name</Form.Label>
             <Form.Control type="input" placeholder="Deck of Awesome" value={name} onChange={({ target }) => setName(target.value)} />
@@ -58,11 +68,16 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ userToken, show, closeModal }
               sourceIsFile ?
                 <Form.File onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFile(event.target.files?.[0] ?? null)} />
                 :
-                // text setting/parse code here
-                null
+                <Form.Group>
+                  <Form.Label>Separator</Form.Label>
+                  <Form.Control type="input" placeholder=";" value={separator} onChange={({ target }) => setSeparator(target.value)} />
+                  <Form.Text className="text-muted">character to separate term from definition</Form.Text>
+                  <Form.Label>Terms and Definition</Form.Label>
+                  <Form.Control as="textarea" value={inputData} onChange={({ target }) => setInputData(target.value)} placeholder={`term ${separator} definition`} />
+                </Form.Group>
             }
           </Form.Group>
-          <Button variant="primary" block type="submit" disabled={!(name && (data || file))}>Create</Button>
+          <Button variant="primary" block type="submit" disabled={!(name && (file || (separator && inputData)))}>Create</Button>
           <Button variant="danger" block onClick={closeModal}>Cancel</Button>
         </Form>
       </ModalBody >

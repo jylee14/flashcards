@@ -1,6 +1,6 @@
 export interface GreetingBannerProps {
-  username: string | null 
-  logout(): void
+  username: string | null; 
+  logout(): void;
 }
 
 export interface User {
@@ -9,15 +9,11 @@ export interface User {
 }
 
 export interface UserPageProps {
-  user: User
+  user: User;
 }
 
 export interface NewDeckFormProps { 
-  userToken: string
-  show: boolean
-  closeModal():void
-}
-
-export interface fileList {
-  fileList: FileList | null
+  userToken: string;
+  show: boolean;
+  closeModal(): void;
 }
