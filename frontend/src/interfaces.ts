@@ -1,5 +1,5 @@
 export interface GreetingBannerProps {
-  username: string | null; 
+  username: string | null;
   logout(): void;
 }
 
@@ -9,11 +9,11 @@ export interface User {
 }
 
 export interface UserPageProps {
-  user: User;
+  notify(msg: string, isError?: boolean): void;
 }
 
-export interface NewDeckFormProps { 
-  userToken: string;
+export interface NewDeckFormProps {
+  notify(msg: string, isError?: boolean): void;
   show: boolean;
   closeModal(): void;
 }

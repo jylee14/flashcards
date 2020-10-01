@@ -15,7 +15,13 @@ const server = new ApolloServer({
       try {
         const decodedToken = jwt.verify(auth.substring(7), process.env.SECRET_KEY)
         const user = await User.findById(decodedToken.id)
-        return { user }
+        return {
+          user: {
+            username: user.username,
+            decks: user.decks,
+            id: user._id
+          }
+        }
       } catch (e) {
         return {
           user: null,

@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -77,7 +76,9 @@ const resolver = {
       await newFlashCard.save()
       return newFlashCard
     },
-    createDeck: async (_root, args) => {
+    createDeck: async (_root, args, context) => {
+      console.log(context.user)
+
       const promiseCards = args.cards.map(async card => {
         const newCard = new FlashCard({
           term: card.term,
@@ -87,7 +88,7 @@ const resolver = {
         return newCard._id
       })
       const cards = await Promise.all(promiseCards)
-      
+
       const deck = new Deck({
         name: args.name,
         public: args.public,

@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from 'react'
-import { ApolloError, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import ModalHeader from 'react-bootstrap/esm/ModalHeader'
 import { Modal, ModalBody, Form, ModalTitle, Button } from 'react-bootstrap'
 
@@ -11,7 +11,7 @@ interface FlashCardDatum {
   definition: string;
 }
 
-const NewDeckForm: React.FC<NewDeckFormProps> = ({ userToken, show, closeModal }) => {
+const NewDeckForm: React.FC<NewDeckFormProps> = ({ notify, show, closeModal }) => {
   // common - shared states
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -25,10 +25,8 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ userToken, show, closeModal }
   const [separator, setSeparator] = useState(';')
   const [inputData, setInputData] = useState('')
 
-  const [mutation, result] = useMutation(CREATE_NEW_DECK, {
-    onError: (err) => {
-      console.error(err)
-    }
+  const [mutation] = useMutation(CREATE_NEW_DECK, {
+    onError: (err) => notify("Failed to create a new deck! Please check that your input is well formed", true)
   })
 
   const createDeck = async (e: FormEvent<HTMLElement>) => {

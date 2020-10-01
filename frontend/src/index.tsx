@@ -7,7 +7,8 @@ import { ApolloClient, ApolloProvider, from, HttpLink, InMemoryCache } from '@ap
 import App from './App';
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('user-token')
+  const userSession = JSON.parse(localStorage.getItem('user-session') || '{}')
+  const token = userSession.token
   return {
     headers: {
       ...headers,

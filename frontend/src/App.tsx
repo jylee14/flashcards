@@ -24,7 +24,7 @@ function App() {
     setTimeout(() => {
       setMesssage('')
       setIsError(false)
-    }, 2500)
+    }, 3000)
   }
 
   const loginOnSuccess = (result: MutationResult<any>) => { // eslint-disable-line
@@ -51,7 +51,7 @@ function App() {
       username: null,
       token: null
     })
-    localStorage.removeItem('user-token')
+    localStorage.removeItem('user-session')
   }
 
   useEffect(() => {
@@ -66,8 +66,8 @@ function App() {
 
   return (<div>
     <GreetingBanner username={user?.username} logout={logout} />
+    <Notification message={message} isError={isError} />
     <div className="container">
-      <Notification message={message} isError={isError} />
       <Switch>
         <Route path="/create">
           <UserForm
@@ -86,9 +86,9 @@ function App() {
           />
         </Route>
         <Route path="/">
-          {user.username && user.token
-            ? <UserPage user={user} />
-            : <LandingPage />}
+          {
+            user.username && user.token ? <UserPage notify={notify} /> : <LandingPage />
+          }
         </Route>
       </Switch>
     </div>
