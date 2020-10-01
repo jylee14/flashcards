@@ -12,11 +12,30 @@ const resolver = {
       const allCards = await FlashCard.find({})
       return allCards
     },
-    allDecks: (_root, _args) => {
-      return Deck.find({
-        // public: true
-        // TODO: Warning remove this later
-      }).populate('cards')
+    allDecks: async (_root, _args, context) => {
+      const publicDecks = await Deck.find({ public: true }).populate('cards')
+      const userDecks = (await User.findById(context.user.id)
+        .populate({
+          path: 'decks',
+          populate: {
+            path: 'cards',
+            ref: 'Flashcard'
+          }
+        })
+      ).decks
+
+      const deckIdSet = new Set()
+      const uniqueDecks = new Array()
+      const decks = publicDecks.concat(userDecks)
+
+      for (const deck of decks) {
+        if (!deckIdSet.has(deck._id.toString())) {
+          uniqueDecks.push(deck)
+          deckIdSet.add(deck._id.toString())
+        }
+      }
+
+      return uniqueDecks
     },
     getDeck: (_root, args) => {
       return Deck.findOne({
@@ -77,7 +96,7 @@ const resolver = {
       return newFlashCard
     },
     createDeck: async (_root, args, context) => {
-      console.log(context.user)
+      const user = await User.findById(context.user.id)
 
       const promiseCards = args.cards.map(async card => {
         const newCard = new FlashCard({
@@ -95,7 +114,9 @@ const resolver = {
         description: args.description || '',
         cards
       })
-      
+      user.decks = user.decks.concat(deck)
+
+      await user.save()
       await deck.save()
       return Deck.populate(deck, {
         path: 'cards'
