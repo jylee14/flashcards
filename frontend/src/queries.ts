@@ -16,11 +16,12 @@ export const CREATE_NEW_DECK = gql`
 `
 
 export const GET_PUBLIC_DECKS = gql`
-  query{
-    allDecks{
+  query {
+    allDecks {
+      id
       name
-      cards{
-        id
+      description
+      cards {
         term
         definition
       }

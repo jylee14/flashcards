@@ -6,8 +6,8 @@ import LandingPage from './components/displays/LandingPage'
 import Notification from './components/displays/Notification'
 import GreetingBanner from './components/displays/GreetingBanner';
 
-import { CREATE_USER, LOGIN } from './queries';
-import { MutationResult } from '@apollo/client';
+import { CREATE_USER, GET_PUBLIC_DECKS, LOGIN } from './queries';
+import { MutationResult, useLazyQuery } from '@apollo/client';
 import UserPage from './components/displays/UserPage';
 import { User } from './interfaces';
 
@@ -16,6 +16,8 @@ function App() {
   const [user, setUser] = useState<User>({ username: null, token: null })
   const [message, setMesssage] = useState('')
   const [isError, setIsError] = useState(false)
+
+  const [loadDecks, result] = useLazyQuery(GET_PUBLIC_DECKS)
 
   const notify = (msg: string, isError = false) => {
     setMesssage(msg)
@@ -60,9 +62,10 @@ function App() {
       const parsedUser = JSON.parse(userSession)
       if (userSession && parsedUser.username && parsedUser.token) {
         setUser(parsedUser)
+        loadDecks()
       }
     }
-  }, [])
+  }, [loadDecks])
 
   return (<div>
     <GreetingBanner username={user?.username} logout={logout} />
@@ -87,7 +90,7 @@ function App() {
         </Route>
         <Route path="/">
           {
-            user.username && user.token ? <UserPage notify={notify} /> : <LandingPage />
+            user.username && user.token ? <UserPage notify={notify} loadedDecks={result} /> : <LandingPage />
           }
         </Route>
       </Switch>

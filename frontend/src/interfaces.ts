@@ -1,3 +1,5 @@
+import { LazyQueryResult } from "@apollo/client";
+
 export interface GreetingBannerProps {
   username: string | null;
   logout(): void;
@@ -10,6 +12,7 @@ export interface User {
 
 export interface UserPageProps {
   notify(msg: string, isError?: boolean): void;
+  loadedDecks: LazyQueryResult<any, any>;
 }
 
 export interface NewDeckFormProps {
