@@ -26,14 +26,13 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ notify, show, closeModal }) =
   const [inputData, setInputData] = useState('')
 
   const [mutation] = useMutation(CREATE_NEW_DECK, {
-    onError: (err) => notify("Failed to create a new deck! Please check that your input is well formed", true)
+    onError: () => notify("Failed to create a new deck! Please check that your input is well formed", true)
   })
 
   const createDeck = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault()
 
-    console.log('name:', name, '\nisPublic:', isPublic, '\nSourceIsFile:', sourceIsFile)
-    const deckData = new Array<FlashCardDatum>()
+    const cards = new Array<FlashCardDatum>()
     const workingData = sourceIsFile ? await file!.text() : inputData
     const termSeparator = sourceIsFile ? '\t' : separator
 
@@ -46,30 +45,28 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ notify, show, closeModal }) =
 
     for (const [term, definition] of wordDefinitionPairs) {
       const datum: FlashCardDatum = { term, definition }
-      deckData.push(datum)
-      if (deckData.length >= 150) { // impose a semi-arbitrary limit of 150 term-def pairs
+      cards.push(datum)
+      if (cards.length >= 150) { // impose a semi-arbitrary limit of 150 term-def pairs
         break
       }
     }
-    mutation({
-      variables: {
-        name,
-        description,
-        isPublic,
-        cards: deckData
-      }
-    })
+    mutation({ variables: { name, description, isPublic, cards } })
+    
+    setName('')
+    setDescription('')
+    setIsPublic(false)
+    setSourceIsFile(true)
+    setFile(null)
+    setSeparator(';')
+    setInputData('')
 
-    console.log(deckData)
     closeModal()
   }
 
   return (
     <Modal show={show} onHide={closeModal}>
       <ModalHeader closeButton>
-        <ModalTitle>
-          Create A New Deck
-        </ModalTitle>
+        <ModalTitle>Create A New Deck</ModalTitle>
       </ModalHeader>
       <ModalBody>
         <Form onSubmit={createDeck}>
