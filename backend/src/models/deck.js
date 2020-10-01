@@ -5,7 +5,12 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  cards:[{
+  description: String,
+  public: {
+    type: Boolean,
+    required: true
+  },
+  cards: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Flashcard'
   }]

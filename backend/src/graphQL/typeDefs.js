@@ -1,6 +1,11 @@
 const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
+  input FlashCardData { 
+    term: String!
+    definition: String!
+  }
+
   type FlashCard {
     id: ID!
     term: String!
@@ -36,7 +41,7 @@ const typeDefs = gql`
     login(username: String!, password: String!): Token
     createUser(username: String!, password: String!): Boolean
     newFlashCard(term: String!, definition: String!): FlashCard
-    createDeck(name: String!, public: Boolean!, description: String, cards: [String!]!): Deck!
+    createDeck(name: String!, public: Boolean!, description: String, cards: [FlashCardData!]!): Deck!
 }`
 
 module.exports = typeDefs

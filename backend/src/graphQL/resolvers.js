@@ -77,14 +77,24 @@ const resolver = {
       await newFlashCard.save()
       return newFlashCard
     },
-    createDeck: async (_root, args) => { // createDeck(name: String!, cards: [String!]!): Deck!
-      const cards = args.cards.map(card => mongoose.Types.ObjectId(card))
+    createDeck: async (_root, args) => {
+      const promiseCards = args.cards.map(async card => {
+        const newCard = new FlashCard({
+          term: card.term,
+          definition: card.definition
+        })
+        await newCard.save()
+        return newCard._id
+      })
+      const cards = await Promise.all(promiseCards)
+      
       const deck = new Deck({
         name: args.name,
         public: args.public,
         description: args.description || '',
         cards
       })
+      
       await deck.save()
       return Deck.populate(deck, {
         path: 'cards'

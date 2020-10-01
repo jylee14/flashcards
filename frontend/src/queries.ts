@@ -1,5 +1,20 @@
 import { gql } from "@apollo/client";
 
+export const CREATE_NEW_DECK = gql`
+  mutation CreateNewDeck($name: String!, $description: String, $isPublic: Boolean!, $cards: [FlashCardData!]!) {
+    createDeck(name: $name, description: $description, public: $isPublic, cards: $cards) {
+      id
+      name
+      description
+      public
+      cards {
+        term
+        definition
+      }
+    }
+  }
+`
+
 export const GET_PUBLIC_DECKS = gql`
   query{
     allDecks{
