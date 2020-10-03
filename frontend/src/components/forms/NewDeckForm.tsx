@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client'
 import ModalHeader from 'react-bootstrap/esm/ModalHeader'
 import { Modal, ModalBody, Form, ModalTitle, Button } from 'react-bootstrap'
 
-import { CREATE_NEW_DECK } from '../../queries'
+import { CREATE_NEW_DECK, GET_PUBLIC_DECKS } from '../../queries'
 
 interface NewDeckFormProps {
   notify(msg: string, isError?: boolean): void;
@@ -31,7 +31,8 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ notify, show, closeModal }) =
   const [inputData, setInputData] = useState('')
 
   const [mutation] = useMutation(CREATE_NEW_DECK, {
-    onError: () => notify("Failed to create a new deck! Please check that your input is well formed", true)
+    onError: () => notify("Failed to create a new deck! Please check that your input is well formed", true),
+    refetchQueries: [{ query: GET_PUBLIC_DECKS }]
   })
 
   const createDeck = async (e: FormEvent<HTMLElement>) => {
@@ -99,6 +100,7 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ notify, show, closeModal }) =
             </Form.Row>
           </Form.Group>
           <Form.Group>
+            <Form.Text className="text-muted">Please note that there is currently a limit of 150 cards per deck</Form.Text>
             {
               sourceIsFile ?
                 <Form.File accept=".tsv" onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFile(event.target.files?.[0] ?? null)} />
