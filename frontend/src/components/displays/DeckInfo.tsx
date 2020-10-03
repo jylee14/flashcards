@@ -1,37 +1,36 @@
 import React from 'react'
-import { Card, ListGroup, ListGroupItem, Accordion } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { Accordion, Table, Card, Button } from 'react-bootstrap'
 
 interface DeckInfoProps {
-  deck: any
-  width: number
+  decks: any[]
 }
 
-const DeckInfo: React.FC<DeckInfoProps> = ({ deck, width }) => {
-  const calculateCardCount = (width: number) => Math.ceil(width / 250)
-  const cardStyle: React.CSSProperties = {
-    border: 'black',
-    borderStyle: 'solid',
-    borderWidth: '1px',
-    maxWidth: '350px',
-    minWidth: `${width < 425 ? width - 30 : 250}px`,
-    width: `${width < 425 ? width - 30 : Math.floor(width / calculateCardCount(width))}px`,
-    position: 'relative',
-    margin: '3px'
-  }
+const DeckInfo: React.FC<DeckInfoProps> = ({ decks }) => {
+  const history = useHistory()
 
   return (
-    <Card style={cardStyle}>
-      <Card.Body>
-        <Card.Title>{deck.name}</Card.Title>
-        <ListGroup variant="flush">
-          <ListGroupItem>{deck.description}</ListGroupItem>
-
-          <ListGroupItem as="button" onClick={() => {}} variant="danger">
-            Delete
-          </ListGroupItem>
-        </ListGroup>
-      </Card.Body>
-    </Card>
+    <div style={{ marginTop: '1vh', zIndex: 0 }}>
+      <Accordion>
+        {
+          decks.map(deck =>
+            <Card key={deck.id}>
+              <Accordion.Toggle as={Card.Header} eventKey={deck.id}>
+                {deck.name} ({deck.cards.length} cards)
+              </Accordion.Toggle>
+              <Accordion.Collapse eventKey={deck.id}>
+                <>
+                  <Card.Body>{deck.description}</Card.Body>
+                  <div style={{ margin: '1em' }}>
+                    <Button variant="primary" onClick={() => history.push(`/deck/${deck.id}`)} block>Open Deck</Button>
+                  </div>
+                </>
+              </Accordion.Collapse>
+            </Card>
+          )
+        }
+      </Accordion>
+    </div>
   )
 }
 
