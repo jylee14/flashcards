@@ -15,6 +15,21 @@ export const CREATE_NEW_DECK = gql`
   }
 `
 
+export const GET_DECK_BY_ID = gql`
+  query GetDeckById($id: String!) {
+    getDeck(id: $id) {
+      id
+      name
+      description
+      cards {
+        id
+        term
+        definition
+      }
+    }
+  }
+`
+
 export const GET_PUBLIC_DECKS = gql`
   query {
     allDecks {

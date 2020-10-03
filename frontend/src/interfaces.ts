@@ -10,6 +10,12 @@ export interface User {
   token: string | null;
 }
 
+export interface Card {
+  id: string;
+  term: string;
+  definition: string;
+}
+
 export interface UserPageProps {
   notify(msg: string, isError?: boolean): void;
   loadedDecks: LazyQueryResult<any, any>;

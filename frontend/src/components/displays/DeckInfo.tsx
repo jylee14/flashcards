@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { Accordion, Table, Card, Button } from 'react-bootstrap'
+import { Accordion, Card, Button } from 'react-bootstrap'
 
 interface DeckInfoProps {
   decks: any[]

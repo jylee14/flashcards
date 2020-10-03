@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { MutationResult, useLazyQuery } from '@apollo/client';
+import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 
 import UserForm from './components/forms/UserForm';
 import LandingPage from './components/displays/LandingPage'
 import Notification from './components/displays/Notification'
 import GreetingBanner from './components/displays/GreetingBanner';
 
-import { CREATE_USER, GET_PUBLIC_DECKS, LOGIN } from './queries';
-import { MutationResult, useLazyQuery } from '@apollo/client';
-import UserPage from './components/displays/UserPage';
 import { User } from './interfaces';
+import UserPage from './components/displays/UserPage';
+import { CREATE_USER, GET_PUBLIC_DECKS, LOGIN } from './queries';
+import CardsInDeck from './components/displays/CardsInDeck';
 
 function App() {
   const history = useHistory()
@@ -17,7 +18,7 @@ function App() {
   const [message, setMesssage] = useState('')
   const [isError, setIsError] = useState(false)
 
-  const [loadDecks, result] = useLazyQuery(GET_PUBLIC_DECKS)
+  const [loadDecks, loadDecksResult] = useLazyQuery(GET_PUBLIC_DECKS)
 
   const notify = (msg: string, isError = false) => {
     setMesssage(msg)
@@ -67,6 +68,8 @@ function App() {
     }
   }, [loadDecks])
 
+  const deckRouteMatch = useRouteMatch<{ id: string }>('/deck/:id')
+
   return (<div>
     <GreetingBanner username={user?.username} logout={logout} />
     <Notification message={message} isError={isError} />
@@ -88,9 +91,14 @@ function App() {
             notify={notify}
           />
         </Route>
+        <Route path="/deck/:id">
+          {
+            deckRouteMatch ? <CardsInDeck id={deckRouteMatch.params.id} /> : null
+          }
+        </Route>
         <Route path="/">
           {
-            user.username && user.token ? <UserPage notify={notify} loadedDecks={result} /> : <LandingPage />
+            user.username && user.token ? <UserPage notify={notify} loadedDecks={loadDecksResult} /> : <LandingPage />
           }
         </Route>
       </Switch>

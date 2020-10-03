@@ -44,6 +44,7 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ notify, show, closeModal }) =
       .map(pair => pair.split(termSeparator))
 
     for (const [term, definition] of wordDefinitionPairs) {
+      if (!term || !definition) { continue }
       const datum: FlashCardDatum = { term, definition }
       cards.push(datum)
       if (cards.length >= 150) { // impose a semi-arbitrary limit of 150 term-def pairs
@@ -51,7 +52,7 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ notify, show, closeModal }) =
       }
     }
     mutation({ variables: { name, description, isPublic, cards } })
-    
+
     setName('')
     setDescription('')
     setIsPublic(false)
