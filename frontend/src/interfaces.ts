@@ -1,13 +1,15 @@
 import { LazyQueryResult } from "@apollo/client";
 
-export interface GreetingBannerProps {
-  username: string | null;
-  logout(): void;
-}
-
 export interface User {
   username: string | null;
   token: string | null;
+}
+
+export interface Deck { 
+  id: string;
+  name: string;
+  description: string | null;
+  cards: Card[];
 }
 
 export interface Card {
@@ -18,11 +20,5 @@ export interface Card {
 
 export interface UserPageProps {
   notify(msg: string, isError?: boolean): void;
-  loadedDecks: LazyQueryResult<any, any>;
-}
-
-export interface NewDeckFormProps {
-  notify(msg: string, isError?: boolean): void;
-  show: boolean;
-  closeModal(): void;
+  loadedDecks: LazyQueryResult<any, any>; // eslint-disable-line
 }

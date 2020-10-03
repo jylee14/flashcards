@@ -1,7 +1,11 @@
 import React from 'react'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { GreetingBannerProps } from '../../interfaces'
+
+interface GreetingBannerProps {
+  username: string | null;
+  logout(): void;
+}
 
 const GreetingBanner: React.FC<GreetingBannerProps> = ({ username, logout }) => {
   const padding: React.CSSProperties = {

@@ -38,9 +38,14 @@ const resolver = {
       return uniqueDecks
     },
     getDeck: (_root, args) => {
-      return Deck.findOne({
-        name: args.name
-      }).populate('cards')
+      if (args.name) {
+        return Deck.findOne({
+          name: args.name
+        }).populate('cards')
+      } else if (args.id) {
+        return Deck.findById(args.id).populate('cards')
+      }
+      throw new UserInputError('Missing deck name or id!')
     }
   },
 

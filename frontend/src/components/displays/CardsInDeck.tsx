@@ -8,7 +8,7 @@ const CardsInDeck: React.FC<{ id: string }> = ({ id }) => {
   const getDeckById = useQuery(GET_DECK_BY_ID, { variables: { id } })
 
   if (getDeckById.loading) {
-    return <>'loading...'</>
+    return <>loading...</>
   }
 
   const deck = getDeckById.data.getDeck

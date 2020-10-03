@@ -3,8 +3,13 @@ import { useMutation } from '@apollo/client'
 import ModalHeader from 'react-bootstrap/esm/ModalHeader'
 import { Modal, ModalBody, Form, ModalTitle, Button } from 'react-bootstrap'
 
-import { NewDeckFormProps } from '../../interfaces'
 import { CREATE_NEW_DECK } from '../../queries'
+
+interface NewDeckFormProps {
+  notify(msg: string, isError?: boolean): void;
+  show: boolean;
+  closeModal(): void;
+}
 
 interface FlashCardDatum {
   term: string;

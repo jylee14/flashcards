@@ -34,7 +34,7 @@ const typeDefs = gql`
   type Query {
     allFlashCards(deck: String): [FlashCard!]!
     allDecks: [Deck!]!
-    getDeck(name: String!, id: ID): Deck!
+    getDeck(name: String, id: String): Deck!
   }
 
   type Mutation {

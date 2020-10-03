@@ -2,8 +2,10 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { Accordion, Card, Button } from 'react-bootstrap'
 
+import { Deck } from '../../interfaces'
+
 interface DeckInfoProps {
-  decks: any[]
+  decks: Deck[];
 }
 
 const DeckInfo: React.FC<DeckInfoProps> = ({ decks }) => {
@@ -13,7 +15,7 @@ const DeckInfo: React.FC<DeckInfoProps> = ({ decks }) => {
     <div style={{ marginTop: '1vh', zIndex: 0 }}>
       <Accordion>
         {
-          decks.map(deck =>
+          decks.map((deck: Deck) =>
             <Card key={deck.id}>
               <Accordion.Toggle as={Card.Header} eventKey={deck.id}>
                 {deck.name} ({deck.cards.length} cards)
