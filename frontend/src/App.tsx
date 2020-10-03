@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MutationResult, useLazyQuery } from '@apollo/client';
+import { MutationResult } from '@apollo/client';
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 
 import UserForm from './components/forms/UserForm';
@@ -8,8 +8,8 @@ import Notification from './components/displays/Notification'
 import GreetingBanner from './components/displays/GreetingBanner';
 
 import { User } from './interfaces';
+import { CREATE_USER, LOGIN } from './queries';
 import UserPage from './components/displays/UserPage';
-import { CREATE_USER, GET_PUBLIC_DECKS, LOGIN } from './queries';
 import CardsInDeck from './components/displays/CardsInDeck';
 
 function App() {
@@ -17,8 +17,6 @@ function App() {
   const [user, setUser] = useState<User>({ username: null, token: null })
   const [message, setMesssage] = useState('')
   const [isError, setIsError] = useState(false)
-
-  const [loadDecks, loadDecksResult] = useLazyQuery(GET_PUBLIC_DECKS)
 
   const notify = (msg: string, isError = false) => {
     setMesssage(msg)
@@ -63,10 +61,9 @@ function App() {
       const parsedUser = JSON.parse(userSession)
       if (userSession && parsedUser.username && parsedUser.token) {
         setUser(parsedUser)
-        loadDecks()
       }
     }
-  }, [loadDecks])
+  }, [setUser])
 
   const deckRouteMatch = useRouteMatch<{ id: string }>('/deck/:id')
 
@@ -98,7 +95,7 @@ function App() {
         </Route>
         <Route path="/">
           {
-            user.username && user.token ? <UserPage notify={notify} loadedDecks={loadDecksResult} /> : <LandingPage />
+            user.username && user.token ? <UserPage notify={notify} /> : <LandingPage />
           }
         </Route>
       </Switch>
