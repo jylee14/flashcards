@@ -7,6 +7,7 @@ import NewDeckForm from '../forms/NewDeckForm';
 
 import { GET_PUBLIC_DECKS } from '../../queries';
 import Filter from '../forms/Filter';
+import { Deck } from '../../interfaces';
 
 interface UserPageProps {
   notify(msg: string, isError?: boolean): void;
@@ -35,10 +36,13 @@ const UserPage: React.FC<UserPageProps> = ({ notify }) => {
   const onMouseEnter = () => setButtonText('Create a New Deck')
   const onMouseLeave = () => setButtonText('+')
 
+  const filteredDecks = publicDecks.data.allDecks
+    .filter((deck: Deck) => deck.name.ignoreCaseIncludes(deckFilter || ''))
+
   return (
     <div style={{ marginTop: '1em' }}>
       <Filter filter={deckFilter} setFilter={setDeckFilter} />
-      <DeckInfo decks={publicDecks.data.allDecks} />
+      <DeckInfo decks={filteredDecks} />
       <NewDeckForm notify={notify} show={modalIsOpen} closeModal={closeModal} />
       <Button onClick={openModal} style={bottomButton} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>{buttonText}</Button>
     </div>

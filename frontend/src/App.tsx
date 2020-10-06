@@ -12,6 +12,8 @@ import { CREATE_USER, LOGIN } from './queries';
 import UserPage from './components/displays/UserPage';
 import CardsInDeck from './components/displays/CardsInDeck';
 
+import './misc/string.ts'
+
 function App() {
   const history = useHistory()
   const [user, setUser] = useState<User>({ username: null, token: null })
