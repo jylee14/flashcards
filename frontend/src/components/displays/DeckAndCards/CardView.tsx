@@ -13,12 +13,12 @@ const CardView: React.FC<CardViewProps> = ({ term, definition, termUp }) => {
   const width = useWindowDimensions().width
 
   const cardContainerStyle: React.CSSProperties = {
-    height: `${(1 / 2) * width}px`,
+    height: `${Math.min((3 / 7) * width, 350)}px`,
     position: 'relative'
   }
 
   const cardStyle: React.CSSProperties = {
-    fontSize: '32px',
+    fontSize: `${3 * Math.log(width) + 20}px`,
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -26,10 +26,8 @@ const CardView: React.FC<CardViewProps> = ({ term, definition, termUp }) => {
     transform: 'translate(-50%, -50%)'
   }
 
-  const onClick = () => setFlipped(!flipped)
-
   return (
-    <Card border="secondary" onClick={onClick} body={true} style={cardContainerStyle}>
+    <Card border="secondary" onClick={() => setFlipped(!flipped)} body={true} style={cardContainerStyle}>
       {
         flipped ?
           <Card.Title style={cardStyle}>{term}</Card.Title> :
