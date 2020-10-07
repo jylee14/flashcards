@@ -1,4 +1,5 @@
 /* eslint no-extend-native: 0 */
+/* eslint @typescript-eslint/ban-types: 0 */
 
 interface String {
   capitalize: () => String;

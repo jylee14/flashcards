@@ -3,15 +3,16 @@ import { MutationResult } from '@apollo/client';
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 
 import UserForm from './components/forms/UserForm';
-import LandingPage from './components/displays/LandingPage'
-import Notification from './components/displays/Notification'
-import GreetingBanner from './components/displays/GreetingBanner';
+import LandingPage from './components/displays/LandingPages/LandingPage'
+import Notification from './components/displays/LandingPages/Notification'
+import GreetingBanner from './components/displays/LandingPages/GreetingBanner';
 
 import { User } from './interfaces';
 import { CREATE_USER, LOGIN } from './queries';
-import UserPage from './components/displays/UserPage';
-import CardsInDeck from './components/displays/CardsInDeck';
+import UserPage from './components/displays/LandingPages/UserPage';
+import CardsInDeck from './components/displays/DeckAndCards/CardsInDeck';
 
+import './misc/array.ts'
 import './misc/string.ts'
 
 function App() {

@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useQuery } from '@apollo/client';
 
-import DeckInfo from './DeckInfo';
-import NewDeckForm from '../forms/NewDeckForm';
+import DeckInfo from '../DeckAndCards/DeckInfo';
+import NewDeckForm from '../../forms/NewDeckForm';
 
-import { GET_PUBLIC_DECKS } from '../../queries';
-import Filter from '../forms/Filter';
-import { Deck } from '../../interfaces';
+import { GET_PUBLIC_DECKS } from '../../../queries';
+import Filter from '../../forms/Filter';
+import { Deck } from '../../../interfaces';
 
 interface UserPageProps {
   notify(msg: string, isError?: boolean): void;

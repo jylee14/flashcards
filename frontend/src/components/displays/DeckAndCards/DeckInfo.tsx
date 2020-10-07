@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { Accordion, Card, Button } from 'react-bootstrap'
 
-import { Deck } from '../../interfaces'
+import { Deck } from '../../../interfaces'
 
 interface DeckInfoProps {
   decks: Deck[];
