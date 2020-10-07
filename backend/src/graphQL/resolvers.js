@@ -46,6 +46,15 @@ const resolver = {
         return Deck.findById(args.id).populate('cards')
       }
       throw new UserInputError('Missing deck name or id!')
+    },
+    myDecks: async (_root, _args, context) => {
+      const user = await User.findById(context.user.id).populate('decks')
+      const userDecks = user.decks
+
+      return Deck.populate(userDecks, {
+        path: 'cards',
+        ref: 'Flashcard'
+      })
     }
   },
 
@@ -126,6 +135,27 @@ const resolver = {
       return Deck.populate(deck, {
         path: 'cards'
       })
+    },
+    deleteDeck: async (_root, args, context) => {
+      if (!args.id) {
+        throw new UserInputError('Missing Deck ID!')
+      }
+
+      const userDeck = await User.findById(context.user.id)
+        .populate({
+          path: 'decks',
+          populate: {
+            path: 'cards',
+            ref: 'Flashcard'
+          }
+        })
+
+      const targetDeck = userDeck.decks.filter(deck => deck._id == args.id)
+      const cardsInDeck = targetDeck[0].cards
+      for (const { _id } of cardsInDeck) {
+        await FlashCard.findByIdAndRemove(_id)
+      }
+      await Deck.findByIdAndRemove(args.id)
     }
   }
 }

@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client'
 import ModalHeader from 'react-bootstrap/esm/ModalHeader'
 import { Modal, ModalBody, Form, ModalTitle, Button } from 'react-bootstrap'
 
-import { CREATE_NEW_DECK, GET_PUBLIC_DECKS } from '../../queries'
+import { CREATE_NEW_DECK, GET_MY_DECKS, GET_PUBLIC_DECKS } from '../../queries'
 
 interface NewDeckFormProps {
   notify(msg: string, isError?: boolean): void;
@@ -32,7 +32,7 @@ const NewDeckForm: React.FC<NewDeckFormProps> = ({ notify, show, closeModal }) =
 
   const [mutation] = useMutation(CREATE_NEW_DECK, {
     onError: () => notify("Failed to create a new deck! Please check that your input is well formed", true),
-    refetchQueries: [{ query: GET_PUBLIC_DECKS }]
+    refetchQueries: [{ query: GET_PUBLIC_DECKS }, { query: GET_MY_DECKS }]
   })
 
   const createDeck = async (e: FormEvent<HTMLElement>) => {

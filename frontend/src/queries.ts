@@ -44,6 +44,26 @@ export const GET_PUBLIC_DECKS = gql`
   }
 `
 
+export const GET_MY_DECKS = gql`
+  query { 
+    myDecks {
+      id
+      name
+      description 
+      cards {
+        term 
+        definition
+      }
+    }
+  }
+`
+
+export const DELETE_DECK = gql`
+  mutation DeleteDeck($id: String!) {
+    deleteDeck(id: $id)
+  }
+`
+
 export const LOGIN = gql`
   mutation LoginUser($username: String!, $password: String!) {
     login(username: $username, password: $password) {

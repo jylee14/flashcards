@@ -3,12 +3,13 @@ import { useHistory } from 'react-router-dom'
 import { Accordion, Card, Button } from 'react-bootstrap'
 
 import { Deck } from '../../../interfaces'
-
 interface DeckInfoProps {
   decks: Deck[];
+  myDeck?: boolean;
+  deleteDeck?: (id: string) => void;
 }
 
-const DeckInfo: React.FC<DeckInfoProps> = ({ decks }) => {
+const DeckInfo: React.FC<DeckInfoProps> = ({ decks, myDeck, deleteDeck }) => {
   const history = useHistory()
 
   return (
@@ -25,6 +26,11 @@ const DeckInfo: React.FC<DeckInfoProps> = ({ decks }) => {
                   <Card.Body>{deck.description}</Card.Body>
                   <div style={{ margin: '1em' }}>
                     <Button variant="primary" onClick={() => history.push(`/deck/${deck.id}`)} block>Open Deck</Button>
+                    {
+                      myDeck ?
+                        <Button variant="danger" onClick={() => deleteDeck!(deck.id)} block>Delete Deck</Button> :
+                        null
+                    }
                   </div>
                 </>
               </Accordion.Collapse>

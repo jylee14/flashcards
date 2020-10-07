@@ -1,26 +1,32 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 
 import DeckInfo from '../DeckAndCards/DeckInfo';
+import Filter from '../../forms/Filter';
 import NewDeckForm from '../../forms/NewDeckForm';
 
-import { GET_PUBLIC_DECKS } from '../../../queries';
-import Filter from '../../forms/Filter';
 import { Deck } from '../../../interfaces';
+import { GET_MY_DECKS, GET_PUBLIC_DECKS, DELETE_DECK } from '../../../queries';
 
 interface UserPageProps {
   notify(msg: string, isError?: boolean): void;
+  getPublicDeck: boolean;
 }
 
-const UserPage: React.FC<UserPageProps> = ({ notify }) => {
-  const publicDecks = useQuery(GET_PUBLIC_DECKS, { fetchPolicy: 'cache-and-network' })
+const UserPage: React.FC<UserPageProps> = ({ notify, getPublicDeck }) => {
+  const query = getPublicDeck ? GET_PUBLIC_DECKS : GET_MY_DECKS
+  const decks = useQuery(query, { fetchPolicy: 'cache-and-network' })
+  const [deleteDeckMutation] = useMutation(DELETE_DECK, {
+    refetchQueries: [{ query }],
+    onError: (err) => notify(err.message, true)
+  })
 
   const [deckFilter, setDeckFilter] = useState('')
   const [buttonText, setButtonText] = useState('+')
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
-  if (publicDecks.loading) {
+  if (decks.loading) {
     return <div>loading...</div>
   }
   const bottomButton: React.CSSProperties = {
@@ -36,13 +42,20 @@ const UserPage: React.FC<UserPageProps> = ({ notify }) => {
   const onMouseEnter = () => setButtonText('Create a New Deck')
   const onMouseLeave = () => setButtonText('+')
 
-  const filteredDecks = publicDecks.data.allDecks
+  const workingDecks = getPublicDeck ? decks.data.allDecks : decks.data.myDecks
+  const filteredDecks = workingDecks
     .filter((deck: Deck) => deck.name.ignoreCaseIncludes(deckFilter || ''))
+
+  const deleteDeck = (id: string) => {
+    if (window.confirm('Delete this deck? This action CANNOT be undone')) {
+      deleteDeckMutation({ variables: { id } })
+    }
+  }
 
   return (
     <div style={{ marginTop: '1em' }}>
       <Filter filter={deckFilter} setFilter={setDeckFilter} />
-      <DeckInfo decks={filteredDecks} />
+      <DeckInfo decks={filteredDecks} myDeck={!getPublicDeck} deleteDeck={getPublicDeck ? undefined : deleteDeck} />
       <NewDeckForm notify={notify} show={modalIsOpen} closeModal={closeModal} />
       <Button onClick={openModal} style={bottomButton} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>{buttonText}</Button>
     </div>

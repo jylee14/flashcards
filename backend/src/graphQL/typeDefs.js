@@ -35,6 +35,7 @@ const typeDefs = gql`
     allFlashCards(deck: String): [FlashCard!]!
     allDecks: [Deck!]!
     getDeck(name: String, id: String): Deck!
+    myDecks: [Deck!]!
   }
 
   type Mutation {
@@ -42,6 +43,7 @@ const typeDefs = gql`
     createUser(username: String!, password: String!): Boolean
     newFlashCard(term: String!, definition: String!): FlashCard
     createDeck(name: String!, public: Boolean!, description: String, cards: [FlashCardData!]!): Deck!
+    deleteDeck(id: String!): Boolean
 }`
 
 module.exports = typeDefs

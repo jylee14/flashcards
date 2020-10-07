@@ -96,9 +96,14 @@ function App() {
             deckRouteMatch ? <CardsInDeck id={deckRouteMatch.params.id} /> : null
           }
         </Route>
+        <Route path="/myDeck">
+          {
+            user.username && user.token ? <UserPage notify={notify} getPublicDeck={false} /> : <LandingPage />
+          }
+        </Route>
         <Route path="/">
           {
-            user.username && user.token ? <UserPage notify={notify} /> : <LandingPage />
+            user.username && user.token ? <UserPage notify={notify} getPublicDeck={true} /> : <LandingPage />
           }
         </Route>
       </Switch>
