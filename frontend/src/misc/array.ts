@@ -1,4 +1,5 @@
 /* eslint no-extend-native: 0 */
+/* eslint @typescript-eslint/ban-types: 0 */
 
 declare global {
   interface Array<T> {
@@ -24,12 +25,19 @@ Array.prototype.shuffle = function () {
  * 
  * @returns any[] - Array containing the contents of this but shuffled
  */
-Array.prototype.shuffled = function () {
-  const shuffled = []
-  for (let i = this.length - 1; i >= 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [this[i], this[j]] = [this[j], this[i]];
-    shuffled.push(this[i])
+Array.prototype.shuffled = function<T> () {
+  const getRandomInt = (max: number) => Math.floor(Math.random() * Math.floor(max))
+
+  const n = this.length
+  const shuffled: Array<T> = []
+  const indices = new Set()
+  
+  while(indices.size < n) {
+    const randomIndex = getRandomInt(n)
+    if(indices.has(randomIndex)) { continue }
+
+    shuffled.push(this[randomIndex])
+    indices.add(randomIndex)
   }
   return shuffled
 }

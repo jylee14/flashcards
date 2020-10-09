@@ -9,22 +9,22 @@ import { GET_DECK_BY_ID } from '../../../queries'
 
 const CardsInDeck: React.FC<{ id: string }> = ({ id }) => {
   const [index, setIndex] = useState(0)
-  const [cards, setCards] = useState([])
   const [loop, setLoop] = useState(true)
+  const [cards, setCards] = useState<Card[]>([])
   const [termUp, setTermUp] = useState(true)
+  const [currentCard, setCurrentCard] = useState<Card | null>(null)
   const getDeckById = useQuery(GET_DECK_BY_ID, { variables: { id } })
 
   useEffect(() => {
     if (!getDeckById.loading && getDeckById.data) {
       const deck = getDeckById.data.getDeck
-      setCards(deck.cards.map((card: Card) => <CardView
-        key={card.id}
-        term={card.term}
-        definition={card.definition}
-        termUp={termUp} />
-      ))
+      setCards(deck.cards)
     }
-  }, [getDeckById, setCards, termUp])
+  }, [getDeckById, setCards])
+  
+  useEffect(() => {
+    setCurrentCard(cards[index])
+  }, [index, cards])
 
   if (getDeckById.loading) {
     return <>loading...</>
@@ -33,11 +33,8 @@ const CardsInDeck: React.FC<{ id: string }> = ({ id }) => {
     return <>Deck not found :(</>
   }
 
-  const deck = getDeckById.data.getDeck
-  const name = deck.name
-  const description = deck.description
-
   const shuffle = () => {
+    setIndex(0)
     setCards(cards.shuffled())
   }
 
@@ -52,17 +49,20 @@ const CardsInDeck: React.FC<{ id: string }> = ({ id }) => {
     }
   }
 
+  const deck = getDeckById.data.getDeck
   return (
     <div>
-      <h1>{name}</h1>
-      <h4>{description}</h4>
+      <h1>{deck.name}</h1>
+      <h4>{deck.description}</h4>
       <Form.Row style={{ padding: '10px' }}>
         <Form.Check inline style={{ marginRight: '25px' }} type="checkbox" onClick={() => setTermUp(!termUp)} defaultChecked={termUp} label="Show Term First" />
         <Form.Check inline type="checkbox" onClick={() => setLoop(!loop)} defaultChecked={loop} label="Loop Cards" />
       </Form.Row>
       <div>
         {
-          cards[index]
+          currentCard ?
+            <CardView key={currentCard.id} term={currentCard!.term} definition={currentCard!.definition} termUp={termUp} /> :
+            null
         }
         <Row style={{ marginTop: '10px' }}>
           <Col><Button block onClick={() => setIndexOverflow(index - 1)} disabled={!index && !loop} >Prev</Button></Col>

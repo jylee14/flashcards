@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import useWindowDimensions from '../../../hooks/windowDimensions';
 
@@ -25,6 +25,10 @@ const CardView: React.FC<CardViewProps> = ({ term, definition, termUp }) => {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)'
   }
+
+  useEffect(() => {
+    setFlipped(termUp)
+  }, [termUp])
 
   return (
     <Card border="secondary" onClick={() => setFlipped(!flipped)} body={true} style={cardContainerStyle}>

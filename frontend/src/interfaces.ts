@@ -3,7 +3,7 @@ export interface User {
   token: string | null;
 }
 
-export interface Deck { 
+export interface Deck {
   id: string;
   name: string;
   description: string | null;
