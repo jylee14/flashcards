@@ -1,8 +1,10 @@
 /* eslint no-extend-native: 0 */
 
-interface Array<T> {
-  shuffle: () => void;
-  shuffled: () => Array<T>;
+declare global {
+  interface Array<T> {
+    shuffle: () => void;
+    shuffled: () => Array<T>;
+  }
 }
 
 /**
@@ -22,12 +24,14 @@ Array.prototype.shuffle = function () {
  * 
  * @returns any[] - Array containing the contents of this but shuffled
  */
-Array.prototype.shuffled = function() {
+Array.prototype.shuffled = function () {
   const shuffled = []
   for (let i = this.length - 1; i >= 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [this[i], this[j]] = [this[j], this[i]];
     shuffled.push(this[i])
-  }  
+  }
   return shuffled
 }
+
+export { }

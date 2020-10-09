@@ -10,6 +10,7 @@ import { GET_DECK_BY_ID } from '../../../queries'
 const CardsInDeck: React.FC<{ id: string }> = ({ id }) => {
   const [index, setIndex] = useState(0)
   const [cards, setCards] = useState([])
+  const [loop, setLoop] = useState(true)
   const [termUp, setTermUp] = useState(true)
   const getDeckById = useQuery(GET_DECK_BY_ID, { variables: { id } })
 
@@ -51,19 +52,24 @@ const CardsInDeck: React.FC<{ id: string }> = ({ id }) => {
     }
   }
 
+  const buttonStyle: React.CSSProperties = { 'position': 'relative' }
+
   return (
     <div>
       <h1>{name}</h1>
       <h4>{description}</h4>
-      <Form.Check type="checkbox" onClick={() => { setTermUp(!termUp) }} defaultChecked={termUp} label="Show Term First" />
+      <Form.Row style={{ padding: '10px' }}>
+        <Form.Check inline style={{ marginRight: '25px' }} type="checkbox" onClick={() => setTermUp(!termUp)} defaultChecked={termUp} label="Show Term First" />
+        <Form.Check inline type="checkbox" onClick={() => setLoop(!loop)} defaultChecked={loop} label="Loop Cards" />
+      </Form.Row>
       <div>
         {
           cards[index]
         }
         <Row style={{ marginTop: '10px' }}>
-          <Col><Button block variant="primary" style={{ position: 'relative' }} onClick={() => setIndexOverflow(index - 1)}>Prev</Button></Col>
-          <Col><Button block variant="primary" style={{ position: 'relative' }} onClick={shuffle}>Shuffle</Button></Col>
-          <Col><Button block variant="primary" style={{ position: 'relative' }} onClick={() => setIndexOverflow(index + 1)}>Next</Button></Col>
+          <Col><Button block style={buttonStyle} onClick={() => setIndexOverflow(index - 1)} disabled={!index && !loop} >Prev</Button></Col>
+          <Col><Button block style={buttonStyle} onClick={shuffle}>Shuffle</Button></Col>
+          <Col><Button block style={buttonStyle} onClick={() => setIndexOverflow(index + 1)} disabled={!loop && (index === cards.length - 1)}>Next</Button></Col>
         </Row>
       </div>
     </div>

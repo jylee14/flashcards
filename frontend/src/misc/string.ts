@@ -1,12 +1,14 @@
 /* eslint no-extend-native: 0 */
 /* eslint @typescript-eslint/ban-types: 0 */
 
-interface String {
-  capitalize: () => String;
-  isDigit: () => Boolean;
-  capitalizeEach: () => String;
-  ignoreCaseIncludes: (substring: string) => Boolean;
-  toCamelCase: () => String;
+declare global {
+  interface String {
+    capitalize: () => String;
+    isDigit: () => Boolean;
+    capitalizeEach: () => String;
+    ignoreCaseIncludes: (substring: string) => Boolean;
+    toCamelCase: () => String;
+  }
 }
 
 String.prototype.capitalize = function () {
@@ -21,7 +23,7 @@ String.prototype.capitalizeEach = function () {
   return this.split(' ').map(word => word.capitalize()).join(' ')
 }
 
-String.prototype.ignoreCaseIncludes = function (substring) {
+String.prototype.ignoreCaseIncludes = function (substring: string) {
   return this.toLowerCase().includes(substring.toLowerCase())
 }
 
@@ -30,3 +32,5 @@ String.prototype.toCamelCase = function () {
   const upperCased = components.map((component, i) => i === 0 ? component.toLowerCase() : component.capitalize())
   return upperCased.join('')
 }
+
+export { }
