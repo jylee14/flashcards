@@ -52,8 +52,6 @@ const CardsInDeck: React.FC<{ id: string }> = ({ id }) => {
     }
   }
 
-  const buttonStyle: React.CSSProperties = { 'position': 'relative' }
-
   return (
     <div>
       <h1>{name}</h1>
@@ -67,9 +65,9 @@ const CardsInDeck: React.FC<{ id: string }> = ({ id }) => {
           cards[index]
         }
         <Row style={{ marginTop: '10px' }}>
-          <Col><Button block style={buttonStyle} onClick={() => setIndexOverflow(index - 1)} disabled={!index && !loop} >Prev</Button></Col>
-          <Col><Button block style={buttonStyle} onClick={shuffle}>Shuffle</Button></Col>
-          <Col><Button block style={buttonStyle} onClick={() => setIndexOverflow(index + 1)} disabled={!loop && (index === cards.length - 1)}>Next</Button></Col>
+          <Col><Button block onClick={() => setIndexOverflow(index - 1)} disabled={!index && !loop} >Prev</Button></Col>
+          <Col><Button block onClick={shuffle}>Shuffle</Button></Col>
+          <Col><Button block onClick={() => setIndexOverflow(index + 1)} disabled={!loop && (index === cards.length - 1)}>Next</Button></Col>
         </Row>
       </div>
     </div>
