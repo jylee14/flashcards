@@ -10,6 +10,7 @@ import GreetingBanner from './components/displays/LandingPages/GreetingBanner';
 import { User } from './interfaces';
 import { CREATE_USER, LOGIN } from './queries';
 import UserPage from './components/displays/LandingPages/UserPage';
+import LearnDeck from './components/displays/DeckAndCards/LearnDeck';
 import CardsInDeck from './components/displays/DeckAndCards/CardsInDeck';
 
 import './misc/array.ts'
@@ -90,6 +91,9 @@ function App() {
             onSuccess={loginOnSuccess}
             notify={notify}
           />
+        </Route>
+        <Route path="/deck/:id/learn">
+          <LearnDeck />
         </Route>
         <Route path="/deck/:id">
           {
