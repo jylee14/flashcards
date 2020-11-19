@@ -52,7 +52,6 @@ const CardWithControls: React.FC<CardWithControlsProps> = ({ deck }) => {
         shuffle()
         break
       default:
-        console.log(e.key)
         break
     }
   }
