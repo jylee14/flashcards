@@ -24,8 +24,12 @@ const LearnDeck = () => {
   const [remainingCards, setRemainingCards] = useState(tail)
   const [currentCard, setCurrentCard] = useState<Card>(head)
 
+  const [learned, setLearned] = useState<Card[]>([])
+
   const checkAnswer = () => {
     if(answer.toLowerCase() === currentCard.definition.toLowerCase()) {
+      setLearned(learned.concat(currentCard))
+      
       const [head, ...tail] = remainingCards
       setRemainingCards(tail)
       setCurrentCard(head)
@@ -40,10 +44,11 @@ const LearnDeck = () => {
   }
 
   const skipCard = () => {
-    const [head, ...tail] = remainingCards
+    const completeDeck = remainingCards.concat(currentCard)
+    const [head, ...tail] = completeDeck
 
-    setRemainingCards([...tail, head])
-    setCurrentCard(remainingCards[0])
+    setCurrentCard(head)
+    setRemainingCards(tail)
   }
 
   const handleKeyboard = (e: React.KeyboardEvent) => {
@@ -54,6 +59,14 @@ const LearnDeck = () => {
       default:
         break
     }
+  }
+
+  if(remainingCards.length === 0) {
+    return (
+      <div>
+        Deck finished!
+      </div>
+    )
   }
 
   return (
@@ -87,6 +100,16 @@ const LearnDeck = () => {
           <Button block variant="danger" onClick={skipCard}>Skip</Button>
         </div>
       </Form.Group>
+    
+      <div>
+        <ul>
+          {
+            learned.map(card => {
+              return <li key={card.id}>{card.term} - {card.definition}</li>
+            })
+          }
+        </ul>
+      </div>
     </div>
   );
 };
