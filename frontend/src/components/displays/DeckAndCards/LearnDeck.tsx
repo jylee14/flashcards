@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import OutlinedLabel, { OutlineColors } from '../OutlinedLabel'
 import { Card, Deck } from '../../../interfaces';
-import { Button, Card as ReactCard, Form} from 'react-bootstrap';
+import { Button, Card as ReactCard, Form, Table} from 'react-bootstrap';
 
 interface LocationProps {
   pathname: string;
@@ -101,15 +101,33 @@ const LearnDeck = () => {
         </div>
       </Form.Group>
     
+    {
+      learned.length > 0 ?
       <div>
-        <ul>
-          {
-            learned.map(card => {
-              return <li key={card.id}>{card.term} - {card.definition}</li>
-            })
-          }
-        </ul>
-      </div>
+        <h4>Learned Words</h4>
+        <Table striped bordered>
+          <thead>
+            <tr>
+              <td>Term</td>
+              <td>Definition</td>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              learned.map(term => {
+                return (
+                  <tr key={term.id}>
+                    <td>{term.term}</td>
+                    <td>{term.definition}</td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </Table>
+      </div> 
+      : null
+    }
     </div>
   );
 };
